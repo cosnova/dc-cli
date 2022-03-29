@@ -16,14 +16,6 @@ local pipeline(name) = {
     ],
 };
 
-local teams() = {
-    name: "teams-webhook",
-    image: "jdamata/drone-teams",
-    settings: {
-        webhook: "https://cosnova.webhook.office.com/webhookb2/33d531bc-5376-4c05-91f8-2c702d0e4fb5@89094d94-eae9-44db-9767-7fd72e6191e5/IncomingWebhook/e99cd0c63c7248c388658282b93bc601/0763258b-31a7-4302-8988-37a5ebc6916d"
-    },
-};
-
 local kaniko(name, artifact, context, dockerfile, list) = {
     name: name,
     image: "wunderai/drone-kaniko:%s" % [KANIKO_TAG],
