@@ -109,14 +109,8 @@ local k8sSecret(name, path, key) = {
   k8sSecret("docker_password", "drone-env-secrets-cosnova", "COSNOVA_DI_ACR_ADMIN_PASSWORD"),
   k8sSecret("slack_token", "drone-env-secrets-cosnova", "SLACK_TOKEN"),
   
-  build('datafetch-jobs', 'datafetch/source'),
-  #build('pgadmin', 'source/pgadmin-test'),
-  build('lamashop-datafetch','source/lamashop') ,
-  build('consentmanager-datafetch','source/consentmanager/datafetch')  ,
-  build('consentmanager-dataprep','source/consentmanager/dataprep')  ,
-  build('commerceconnector-datafetch','source/CommerceConnector') ,
-  build('commerceconnector-backfill','source/CommerceConnectorBackfill') ,
-  build('amzn-ads-datafetch','source/AmazonAds') ,
+  build('dc-cli', 'source'),
+
 
 ]
 ###############################################################################
