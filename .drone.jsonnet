@@ -74,7 +74,6 @@ local build(artifact, directory) = pipeline(artifact) {
             '/kaniko/plugin.sh',
             # '/slack', # disable slack in case of success - too noisy
         ]),
-        teams(),
         kaniko("report-failure", artifact, ".", "Dockerfile", [
             'PLUGIN_SLACK_TEMPLATE=$PLUGIN_SLACK_TEMPLATE_FAILURE /slack',
         ]) + {when: {status:["failure"]},},
@@ -88,7 +87,6 @@ local buildCtx(artifact, directory) = pipeline(artifact) {
             '/kaniko/plugin.sh',
             # '/slack',
         ]),
-        teams(),
         kaniko("report-failure", artifact, directory, "Dockerfile", [
             'PLUGIN_SLACK_TEMPLATE=$PLUGIN_SLACK_TEMPLATE_FAILURE /slack',
         ]) + {when: {status:["failure"]},},
