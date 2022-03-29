@@ -99,7 +99,7 @@ local k8sSecret(name, path, key) = {
   k8sSecret("docker_password", "drone-env-secrets-cosnova", "COSNOVA_DI_ACR_ADMIN_PASSWORD"),
   k8sSecret("slack_token", "drone-env-secrets-cosnova", "SLACK_TOKEN"),
   
-  build('dc-cli', 'source'),
+  build('dc-cli', ''),
 
 
 ]
