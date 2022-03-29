@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: dc-cli
+spec:
+  arguments:
+    parameters:
+      - name: build
+        value: thebuildnumber
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: waiwunderci
+    - name: waicosnovaml
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: build
+                  value: '{{workflow.parameters.build}}'
+            name: cli
+            template: cli
+    - inputs:
+        parameters:
+          - name: build
+      metrics:
+        prometheus: []
+      name: cli
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: BUILD
+            value: '{{workflow.parameters.build}}'
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          $BUILD
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
