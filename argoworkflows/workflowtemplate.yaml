@@ -5,8 +5,8 @@ metadata:
 spec:
   arguments:
     parameters:
-      - name: build
-        value: thebuildnumber
+      - name: parameter
+        value: default-value
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -19,16 +19,18 @@ spec:
       steps:
         - - arguments:
               parameters:
-                - name: build
-                  value: '{{workflow.parameters.build}}'
-            name: cli
-            template: cli
+                - name: parameter
+                  value: '{{workflow.parameters.parameter}}'
+            name: step1
+            template: step1
+        - - name: step2
+            template: step2
     - inputs:
         parameters:
-          - name: build
+          - name: parameter
       metrics:
         prometheus: []
-      name: cli
+      name: step1
       outputs:
         parameters: []
       script:
@@ -36,11 +38,35 @@ spec:
         command:
           - /bin/sh
         env:
-          - name: BUILD
-            value: '{{workflow.parameters.build}}'
+          - name: parameter
+            value: '{{workflow.parameters.parameter}}'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: dc-cli
+                name: CLIENTSECRET
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          $BUILD
+          $parameter
+    - inputs:
+      metrics:
+        prometheus: []
+      name: step2
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: dc-cli
+                name: CLIENTSECRET
+        image: 'waicosnovadi.azurecr.io/dc-cli:parameter-pipeline'
+        source: |
+          dc-cli --version          
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
