@@ -43,8 +43,8 @@ spec:
           - name: CLIENTSECRET
             valueFrom:
               secretKeyRef:
-                key: dc-cli
-                name: CLIENTSECRET
+                key: CLIENTSECRET
+                name: dc-cli
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           $parameter
