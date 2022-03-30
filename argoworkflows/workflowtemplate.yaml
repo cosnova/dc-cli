@@ -64,7 +64,7 @@ spec:
               secretKeyRef:
                 key: CLIENTSECRET
                 name: dc-cli
-        image: 'waicosnovadi.azurecr.io/dc-cli:parameter-pipeline'
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli --version          
   ttlStrategy:
