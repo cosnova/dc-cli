@@ -76,30 +76,3 @@ spec:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
     secondsAfterSuccess: 600
-
-
-
-
-
-    #!/bin/bash
-
-#HUBS // ID'S
-CATPROD='5f05a72acff47e00019357ef'
-CATPREPROD='5f0599554cedfd0001ca42cc'
-CATDEV='5e58fb8752faff0001085709'
-CATPLAY='60d9d13bc9e77c000105146d'
-ESSPROD='5f1afbf752faff00018681f5'
-ESSPREPROD='5f1afad652faff0001983332'
-ESSDEV='5f1afa06cff47e0001e5b39f'
-
-#First set HUB & Secrets
-
-dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $ESSDEV
-
-#Clean specified HUB
-
-dc-cli hub clean --hubId $ESSDEV
-
-#Copy Source HUB to Destination HUB
-
-dc-cli hub clone $ESSPROD --dstHubId $ESSDEV --publish
