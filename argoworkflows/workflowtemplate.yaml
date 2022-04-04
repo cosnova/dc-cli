@@ -52,7 +52,7 @@ spec:
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
-          dc-cli hub clean --hubId $CATPLAY
+          dc-cli hub clean --hubId $CATPLAY --force
     - inputs:
       metrics:
         prometheus: []
