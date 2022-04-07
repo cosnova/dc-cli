@@ -1,0 +1,115 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: dc-cli-catprod-2-catplay
+spec:
+  arguments:
+    parameters:
+      - name: parameters
+        value: 'default-value'
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: waiwunderci
+    - name: waicosnovaml
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: parameters
+                  value: '{{workflow.parameters.parameters}}'
+            name: step1
+            template: step1
+        - - name: step2
+            template: step2
+        - - name: step3
+            template: step3
+# Step 1 - Get dc-cli Verison
+    - inputs:
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli --version
+# Step 2 - Login to Amplience and Clean Hub
+    - inputs:
+        parameters:
+          - name: parameters
+      metrics:
+        prometheus: []
+      name: step2
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: PARAMETERS
+            value: '{{workflow.parameters.parameters}}'
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+
+          dc-cli hub clean --hubId $CATPLAY --force
+# Step 3 - Copy Source Hub to Destination Hub
+     - inputs:
+        parameters:
+          - name: parameters
+      metrics:
+        prometheus: []
+      name: step3
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: PARAMETERS
+            value: '{{workflow.parameters.parameters}}'
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CATPROD
+            value: '5f05a72acff47e00019357ef'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
+
+          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --publish          
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
