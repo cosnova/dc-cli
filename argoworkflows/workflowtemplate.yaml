@@ -6,7 +6,7 @@ spec:
   arguments:
     parameters:
       - name: hubid
-        value: 'Enter the HubId e.g. CATPLAY'
+        value: 'Enter the HubId e.g. 123456'
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -52,6 +52,8 @@ spec:
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
+
+          dc-cli hub clean --hubId $HUBID
     - inputs:
       metrics:
         prometheus: []
