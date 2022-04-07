@@ -97,6 +97,12 @@ spec:
         env:
           - name: PARAMETERS
             value: '{{workflow.parameters.parameters}}'
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CATPROD
+            value: '5f05a72acff47e00019357ef'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
             valueFrom:
               secretKeyRef:
@@ -104,7 +110,9 @@ spec:
                 name: dc-cli
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          dc-cli --version      
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
+
+          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --publish
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
