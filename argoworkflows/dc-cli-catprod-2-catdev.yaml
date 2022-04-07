@@ -78,7 +78,7 @@ spec:
 
           dc-cli hub clean --hubId $CATDEV --force
 # Step 3 - Copy Source Hub to Destination Hub
-     - inputs:
+    - inputs:
         parameters:
           - name: parameters
       metrics:
