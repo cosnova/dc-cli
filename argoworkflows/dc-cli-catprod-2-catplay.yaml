@@ -53,8 +53,6 @@ spec:
           dc-cli --version
 # Step 2 - Login to Amplience and Clean Hub 
     - inputs:
-        parameters:
-          - name: parameters
       metrics:
         prometheus: []
       name: step2
@@ -65,8 +63,6 @@ spec:
         command:
           - /bin/sh
         env:
-          - name: PARAMETERS
-            value: '{{workflow.parameters.parameters}}'
           - name: CATPLAY
             value: '60d9d13bc9e77c000105146d'
           - name: CLIENTID
@@ -83,8 +79,6 @@ spec:
           dc-cli hub clean --hubId $CATPLAY --force
 # Step 3 - Copy Source Hub to Destination Hub 
     - inputs:
-        parameters:
-          - name: parameters
       metrics:
         prometheus: []
       name: step3
@@ -95,8 +89,6 @@ spec:
         command:
           - /bin/sh
         env:
-          - name: PARAMETERS
-            value: '{{workflow.parameters.parameters}}'
           - name: CATPLAY
             value: '60d9d13bc9e77c000105146d'
           - name: CATPROD
