@@ -51,12 +51,37 @@ spec:
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli --version
+# Step 2 - Login to Amplience and Clean Hub 
     - inputs:
         parameters:
           - name: parameters
       metrics:
         prometheus: []
       name: step2
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: PARAMETERS
+            value: '{{workflow.parameters.parameters}}'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli --version
+# Step 3 - Copy Source Hub to Destination Hub 
+    - inputs:
+        parameters:
+          - name: parameters
+      metrics:
+        prometheus: []
+      name: step3
       outputs:
         parameters: []
       script:
