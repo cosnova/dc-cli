@@ -43,10 +43,6 @@ spec:
         env:
           - name: PARAMETERS
             value: '{{workflow.parameters.parameters}}'
-          - name: CLIENTID
-            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
-          - name: CATPLAY
-            value: '60d9d13bc9e77c000105146d'
           - name: CLIENTSECRET
             valueFrom:
               secretKeyRef:
@@ -54,8 +50,10 @@ spec:
                 name: dc-cli
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
+          dc-cli --version
     - inputs:
+        parameters:
+          - name: parameters
       metrics:
         prometheus: []
       name: step2
@@ -66,6 +64,8 @@ spec:
         command:
           - /bin/sh
         env:
+          - name: PARAMETERS
+            value: '{{workflow.parameters.parameters}}'
           - name: CLIENTSECRET
             valueFrom:
               secretKeyRef:
@@ -73,7 +73,7 @@ spec:
                 name: dc-cli
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          dc-cli --version          
+          dc-cli --version      
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
