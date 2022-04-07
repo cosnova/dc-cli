@@ -5,10 +5,8 @@ metadata:
 spec:
   arguments:
     parameters:
-      - name: brand
-        value: 'cat or ess?'
       - name: hubid
-        value: '1 or 2 or 3 or 4 or 5 or 6...?'
+        value: 'Enter the HubId e.g. CATPLAY'
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -21,8 +19,6 @@ spec:
       steps:
         - - arguments:
               parameters:
-                - name: brand
-                  value: '{{workflow.parameters.brand}}'
                 - name: hubid
                   value: '{{workflow.parameters.hubid}}'
             name: step1
@@ -31,7 +27,6 @@ spec:
             template: step2
     - inputs:
         parameters:
-          - name: brand
           - name: hubid
       metrics:
         prometheus: []
@@ -43,9 +38,7 @@ spec:
         command:
           - /bin/sh
         env:
-          - name: Brand
-            value: '{{workflow.parameters.brand}}'
-          - name: HubID
+          - name: HUBID
             value: '{{workflow.parameters.hubid}}'
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
@@ -58,8 +51,7 @@ spec:
                 name: dc-cli
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $hubid
-          dc-cli hub clean --hubId $CATPLAY --force
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
     - inputs:
       metrics:
         prometheus: []
