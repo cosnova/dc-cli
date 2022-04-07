@@ -1,0 +1,114 @@
+metadata:
+  name: dc-cli
+  namespace: prod-webshop-argo
+  uid: 1a609832-f8be-4d0e-9ef2-81320a1eaebc
+  resourceVersion: '55525775'
+  generation: 13
+  creationTimestamp: '2022-03-30T07:20:39Z'
+  labels:
+    app.kubernetes.io/instance: bs-eu-w-10.prod-webshop-argo.argoworkflows
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"WorkflowTemplate","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"bs-eu-w-10.prod-webshop-argo.argoworkflows"},"name":"dc-cli","namespace":"prod-webshop-argo"},"spec":{"arguments":{"parameters":[{"name":"parameter","value":"default-value"}]},"entrypoint":"template","imagePullSecrets":[{"name":"waicosnovadi"},{"name":"waiwunderci"},{"name":"waicosnovaml"}],"metrics":{"prometheus":[]},"templates":[{"name":"template","steps":[[{"arguments":{"parameters":[{"name":"parameter","value":"{{workflow.parameters.parameter}}"}]},"name":"step1","template":"step1"}],[{"name":"step2","template":"step2"}]]},{"inputs":{"parameters":[{"name":"parameter"}]},"metrics":{"prometheus":[]},"name":"step1","outputs":{"parameters":[]},"script":{"args":[],"command":["/bin/sh"],"env":[{"name":"parameter","value":"{{workflow.parameters.parameter}}"},{"name":"CLIENTID","value":"c81b7886-f62b-4cad-ba01-02ca63026588"},{"name":"CATPLAY","value":"60d9d13bc9e77c000105146d"},{"name":"CLIENTSECRET","valueFrom":{"secretKeyRef":{"key":"CLIENTSECRET","name":"dc-cli"}}}],"image":"waicosnovadi.azurecr.io/dc-cli:build-pipeline","source":"dc-cli
+      configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId
+      $CATPLAY\ndc-cli hub clean --hubId $CATPLAY
+      --force\n"}},{"inputs":null,"metrics":{"prometheus":[]},"name":"step2","outputs":{"parameters":[]},"script":{"args":[],"command":["/bin/sh"],"env":[{"name":"CLIENTSECRET","valueFrom":{"secretKeyRef":{"key":"CLIENTSECRET","name":"dc-cli"}}}],"image":"waicosnovadi.azurecr.io/dc-cli:build-pipeline","source":"dc-cli
+      --version         
+      \n"}}],"ttlStrategy":{"secondsAfterCompletion":600,"secondsAfterFailure":259200,"secondsAfterSuccess":600}}}
+  managedFields:
+    - manager: argocd-application-controller
+      operation: Update
+      apiVersion: argoproj.io/v1alpha1
+      time: '2022-04-07T09:41:37Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+          'f:labels':
+            .: {}
+            'f:app.kubernetes.io/instance': {}
+        'f:spec': {}
+spec:
+  templates:
+    - name: template
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: step1
+            template: step1
+            arguments:
+              parameters:
+                - name: parameter
+                  value: '{{workflow.parameters.parameter}}'
+        - - name: step2
+            template: step2
+            arguments: {}
+    - name: step1
+      inputs:
+        parameters:
+          - name: parameter
+      outputs: {}
+      metadata: {}
+      script:
+        name: ''
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        command:
+          - /bin/sh
+        env:
+          - name: parameter
+            value: '{{workflow.parameters.parameter}}'
+          - name: CLIENTID
+            value: c81b7886-f62b-4cad-ba01-02ca63026588
+          - name: CATPLAY
+            value: 60d9d13bc9e77c000105146d
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                name: dc-cli
+                key: CLIENTSECRET
+        resources: {}
+        source: >
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET
+          --hubId $CATPLAY
+
+          dc-cli hub clean --hubId $CATPLAY --force
+      metrics:
+        prometheus: null
+    - name: step2
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      script:
+        name: ''
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        command:
+          - /bin/sh
+        env:
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                name: dc-cli
+                key: CLIENTSECRET
+        resources: {}
+        source: |
+          dc-cli --version          
+      metrics:
+        prometheus: null
+  entrypoint: template
+  arguments:
+    parameters:
+      - name: parameter
+        value: default-value
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: waiwunderci
+    - name: waicosnovaml
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterSuccess: 600
+    secondsAfterFailure: 259200
+  metrics:
+    prometheus: null
