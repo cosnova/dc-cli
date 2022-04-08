@@ -25,9 +25,9 @@ export class IndexCloneStep implements CloneHubStep {
         logFile: state.logFile,
         ...state.to
       });
-    } catch (e) {
-      state.logFile.appendLine(`ERROR: Could not export existing indexes. \n${e}`);
-      return false;
+    } catch (s) {
+      state.logFile.appendLine(`ERROR: Could not export existing indexes. \n${s}`);
+      return true;
     }
 
     try {
@@ -38,9 +38,9 @@ export class IndexCloneStep implements CloneHubStep {
         logFile: state.logFile,
         ...state.from
       });
-    } catch (e) {
-      state.logFile.appendLine(`ERROR: Could not export indexes. \n${e}`);
-      return false;
+    } catch (s) {
+      state.logFile.appendLine(`ERROR: Could not export indexes. \n${s}`);
+      return true;
     }
 
     try {
@@ -50,9 +50,9 @@ export class IndexCloneStep implements CloneHubStep {
         webhooks: true,
         ...state.to
       });
-    } catch (e) {
-      state.logFile.appendLine(`ERROR: Could not import indexes. \n${e}`);
-      return false;
+    } catch (s) {
+      state.logFile.appendLine(`ERROR: Could not import indexes. \n${s}`);
+      return true;
     }
 
     return true;
