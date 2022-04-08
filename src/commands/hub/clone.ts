@@ -10,7 +10,7 @@ import { ContentCloneStep } from './steps/content-clone-step';
 import { SchemaCloneStep } from './steps/schema-clone-step';
 import { SettingsCloneStep } from './steps/settings-clone-step';
 import { TypeCloneStep } from './steps/type-clone-step';
-import { IndexCloneStep } from './steps/index-clone-step';
+// import { IndexCloneStep } from './steps/index-clone-step';
 import { CloneHubState } from './model/clone-hub-state';
 import { LogErrorLevel } from '../../common/archive/archive-log';
 import { ExtensionCloneStep } from './steps/extension-clone-step';
