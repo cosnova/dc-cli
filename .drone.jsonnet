@@ -9,7 +9,7 @@ local pipeline(name) = {
     kind: "pipeline",
     type: "kubernetes",
     node_selector: {
-        "agentpool": "agents2"
+        "agentpool": "agents"
     },
     volumes: [
         {name: "cache",   temp: {}},
