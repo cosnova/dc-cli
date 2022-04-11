@@ -5,9 +5,9 @@ metadata:
 spec:
   arguments:
     parameters:
-      - name: LocaleList
+      - name: localelist
         value: 'Enter locales divided by "|" for each locale e.g.: de-DE|en-GB|fr-FR... '
-        - name: WorkflowIdList
+        - name: workflowidlist
         value: 'Enter the Workflow Id divided by "|" e.g.: 1234abc|456def|789ghi... '
   entrypoint: template
   imagePullSecrets:
