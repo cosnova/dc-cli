@@ -64,3 +64,4 @@ spec:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
     secondsAfterSuccess: 600
+    
