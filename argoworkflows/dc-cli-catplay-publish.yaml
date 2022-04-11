@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: dc-cli-catplay-publish
+spec:
+  arguments:
+    parameters:
+      - name: LocaleList
+        value: 'Enter locales divided by "|" for each locale e.g.: de-DE|en-GB|fr-FR... '
+        - name: WorkflowIdList
+        value: 'Enter the Workflow Id divided by "|" e.g.: 1234abc|456def|789ghi... '
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: waiwunderci
+    - name: waicosnovaml
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: localelist
+                  value: '{{workflow.parameters.localelist}}'
+                - name: workflowidlist
+                  value: '{{workflow.parameters.workflowidlist}}'
+            name: step1
+            template: step1
+# Step 1 - Publish Job
+    - inputs:
+        parameters:
+          - name: localelist
+          - name: workflowidlist
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: LOCALELIST
+            value: '{{workflow.parameters.localelist}}'
+          - name: WORKFLOWIDLIST
+            value: '{{workflow.parameters.workflowidlist}}'
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+
+          dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutshoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId 60d9d156cff47e0001166fe6 --dryRun
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
