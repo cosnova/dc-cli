@@ -8,7 +8,7 @@ import * as settings from './steps/settings-clone-step';
 import * as schema from './steps/schema-clone-step';
 import * as type from './steps/type-clone-step';
 import * as extension from './steps/extension-clone-step';
-import * as index from './steps/index-clone-step';
+// import * as index from './steps/index-clone-step';
 
 import rmdir from 'rimraf';
 import { CloneHubBuilderOptions } from '../../interfaces/clone-hub-builder-options';
