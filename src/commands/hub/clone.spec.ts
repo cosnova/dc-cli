@@ -8,7 +8,7 @@ import * as settings from './steps/settings-clone-step';
 import * as schema from './steps/schema-clone-step';
 import * as type from './steps/type-clone-step';
 import * as extension from './steps/extension-clone-step';
-// import * as index from './steps/index-clone-step';
+import * as index from './steps/index-clone-step';
 
 import rmdir from 'rimraf';
 import { CloneHubBuilderOptions } from '../../interfaces/clone-hub-builder-options';
@@ -81,7 +81,7 @@ function getMocks(): jest.Mock[] {
     extension.ExtensionCloneStep as jest.Mock,
     schema.SchemaCloneStep as jest.Mock,
     type.TypeCloneStep as jest.Mock,
-    // index.IndexCloneStep as jest.Mock,
+    index.IndexCloneStep as jest.Mock,
     content.ContentCloneStep as jest.Mock
   ];
 }
@@ -352,7 +352,7 @@ describe('hub clone command', () => {
     });
 
     it('should start from the step given as a parameter', async () => {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         clearMocks();
         success = [true, true, true, true, true, true];
 
@@ -590,7 +590,7 @@ describe('hub clone command', () => {
     });
 
     it('should start reverting from the step given as a parameter (steps in decreasing order)', async () => {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         clearMocks();
         success = [true, true, true, true, true, true];
 
