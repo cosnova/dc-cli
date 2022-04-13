@@ -27,7 +27,7 @@ spec:
             template: step2
         - - name: step3
             template: step3
-# Step 1 - Get dc-cli Verison 
+    # Step 1 - Get dc-cli Verison
     - inputs:
         parameters:
           - name: parameters
@@ -51,7 +51,7 @@ spec:
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli --version
-# Step 2 - Login to Amplience and Clean Hub 
+    # Step 2 - Login to Amplience and Clean Hub
     - inputs:
       metrics:
         prometheus: []
@@ -77,7 +77,7 @@ spec:
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $ESSDEV
 
           dc-cli hub clean --hubId $ESSDEV --force
-# Step 3 - Copy Source Hub to Destination Hub 
+    # Step 3 - Copy Source Hub to Destination Hub
     - inputs:
       metrics:
         prometheus: []
@@ -104,7 +104,9 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $ESSPROD
 
-          dc-cli hub clone $ESSPROD --dstHubId $ESSDEV --publish
+          dc-cli hub clone $ESSPROD --dstHubId $ESSDEV --publish --force
+
+          dc-cli hub clone $ESSPROD --dstHubId $ESSDEV --step content --publish --force
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200

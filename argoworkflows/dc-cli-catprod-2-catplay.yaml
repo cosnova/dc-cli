@@ -104,9 +104,9 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
 
-          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --publish
+          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --publish --force
 
-          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --step content --publish
+          dc-cli hub clone $CATPROD --dstHubId $CATPLAY --step content --publish --force
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
