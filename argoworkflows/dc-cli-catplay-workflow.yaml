@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: dc-cli-catplay-publish
+  name: dc-cli-catplay-workflow
 spec:
   arguments:
     parameters:
@@ -27,7 +27,7 @@ spec:
                   value: '{{workflow.parameters.workflowidlist}}'
             name: step1
             template: step1
-    # Step 1 - Publish Job
+    # Step 1 - Workflow Job
     - inputs:
         parameters:
           - name: localelist
@@ -61,7 +61,7 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
 
-          dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutshoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $REPOID --dryRun
+          dc-cli content-item workflow --facet "locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $REPOID -targetWorkflowLabel "Ready for Translation" --dryRun
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
