@@ -2,6 +2,8 @@ FROM node:alpine
 
 COPY . .
 
-RUN npm install -g @amplience/dc-cli
+RUN npm install
+RUN npm run build
+RUN npm install -g . --force
 RUN dc-cli --version
 CMD ["dc-cli", "--version"]
