@@ -104,8 +104,6 @@ spec:
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $ESSPROD
 
           dc-cli hub clone $ESSPROD --dstHubId $ESSPREPROD --step extension --publish --force
-
-          dc-cli hub clone $ESSPROD --dstHubId $ESSPREPROD --step content --publish --force
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
