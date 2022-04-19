@@ -1,7 +1,7 @@
 local KANIKO_TAG="15";
 
-local registry = "waicosnovadi.azurecr.io";
-local docker_username = "waicosnovadi";
+local registry = "cnvwebshop.azurecr.io";
+local docker_username = "cnvwebshop";
 
 ###############################################################################
 local pipeline(name) = {
@@ -48,7 +48,7 @@ local kaniko(name, artifact, context, dockerfile, list) = {
         #    "BUILD_LINK=${DRONE_BUILD_LINK}",
         ],
         username: docker_username,
-        password: { from_secret: "docker_password"},
+        password: { from_secret: "registry_webshop"},
 
         slack_token: { from_secret: "slack_token" },
         slack_channel: "github-cosnova-di",
@@ -96,7 +96,7 @@ local k8sSecret(name, path, key) = {
 
 ###############################################################################
 [
-  k8sSecret("docker_password", "drone-env-secrets", "COSNOVA_DI_ACR_ADMIN_PASSWORD"),
+  #k8sSecret("docker_password", "drone-env-secrets", "COSNOVA_DI_ACR_ADMIN_PASSWORD"),
   k8sSecret("slack_token", "drone-env-secrets", "SLACK_TOKEN"),
   
   build('dc-cli', ''),
