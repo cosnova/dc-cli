@@ -56,7 +56,7 @@ spec:
               secretKeyRef:
                 key: CLIENTSECRET
                 name: dc-cli
-        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
 
