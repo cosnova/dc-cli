@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: dc-cli-catprod-2-catplay
+  name: CLONE-catprod-2-catplay
 spec:
   arguments:
     parameters:
