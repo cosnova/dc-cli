@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: CLONE-essprod-2-esspreprod
+  name: clone-essprod-2-esspreprod
 spec:
   arguments:
     parameters:
