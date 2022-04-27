@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: dc-cli-catprod-publish
+  name: translation-catprod
 spec:
   arguments:
     parameters:
       - name: localelist
         value: 'de-DE|en-GB...'
-      - name: workflowidlist
+      - name: translationid
         value: '1234abc|456def|789ghi... '
   entrypoint: template
   imagePullSecrets:
@@ -22,15 +22,15 @@ spec:
               parameters:
                 - name: localelist
                   value: '{{workflow.parameters.localelist}}'
-                - name: workflowidlist
-                  value: '{{workflow.parameters.workflowidlist}}'
+                - name: translationid
+                  value: '{{workflow.parameters.translationid}}'
             name: step1
             template: step1
-    # Step 1 - Publish Job
+    # Step 1 - Workflow Job
     - inputs:
         parameters:
           - name: localelist
-          - name: workflowidlist
+          - name: translationid
       metrics:
         prometheus: []
       name: step1
@@ -43,11 +43,11 @@ spec:
         env:
           - name: LOCALELIST
             value: '{{workflow.parameters.localelist}}'
-          - name: WORKFLOWIDLIST
-            value: '{{workflow.parameters.workflowidlist}}'
+          - name: TRANSLATIONID
+            value: '{{workflow.parameters.translationid}}'
           - name: CATPROD
             value: '5f05a72acff47e00019357ef'
-          - name: REPOID
+          - name: CONTENTID
             value: '5f05a749cff47e000186aeda' # CATPROD Content Repo ID
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
@@ -60,7 +60,7 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
 
-          dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutshoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $REPOID
+          dc-cli content-item workflow --facet "locale:/$LOCALELIST/, workflowId:/$TRANSLATIONID/" --repoId $CONTENTID -targetWorkflowLabel "Ready for Translation"
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200

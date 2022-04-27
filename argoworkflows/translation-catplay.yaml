@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: translation-catplay
+spec:
+  arguments:
+    parameters:
+      - name: localelist
+        value: 'de-DE|en-GB...'
+      - name: translationid
+        value: '1234abc|456def|789ghi... '
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: cnvwebshop
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: localelist
+                  value: '{{workflow.parameters.localelist}}'
+                - name: translationid
+                  value: '{{workflow.parameters.translationid}}'
+            name: step1
+            template: step1
+    # Step 1 - Workflow Job
+    - inputs:
+        parameters:
+          - name: localelist
+          - name: translationid
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: LOCALELIST
+            value: '{{workflow.parameters.localelist}}'
+          - name: TRANSLATIONID
+            value: '{{workflow.parameters.translationid}}'
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CONTENTID
+            value: '60d9d156cff47e0001166fe6' # CATPLAY Content Repo ID
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+
+          dc-cli content-item workflow --facet "locale:/$LOCALELIST/, workflowId:/$TRANSLATIONID/" --repoId $CONTENTID -targetWorkflowLabel "Ready for Translation"
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600

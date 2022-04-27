@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: dc-cli-catplay-workflow
+  name: publish-essprod
 spec:
   arguments:
     parameters:
@@ -26,7 +26,7 @@ spec:
                   value: '{{workflow.parameters.workflowidlist}}'
             name: step1
             template: step1
-    # Step 1 - Workflow Job
+    # Step 1 - Publish Job
     - inputs:
         parameters:
           - name: localelist
@@ -45,10 +45,10 @@ spec:
             value: '{{workflow.parameters.localelist}}'
           - name: WORKFLOWIDLIST
             value: '{{workflow.parameters.workflowidlist}}'
-          - name: CATPLAY
-            value: '60d9d13bc9e77c000105146d'
-          - name: REPOID
-            value: '60d9d156cff47e0001166fe6' # CATPLAY Content Repo ID
+          - name: ESSPROD
+            value: '5f1afbf752faff00018681f5'
+          - name: CONTENTID
+            value: '5f1afbfecff47e0001e5b3d0' # ESSPROD Content Repo ID
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
@@ -58,9 +58,9 @@ spec:
                 name: dc-cli
         image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
         source: |
-          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $ESSPROD
 
-          dc-cli content-item workflow --facet "locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $REPOID -targetWorkflowLabel "Ready for Translation" --dryRun
+          dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutshoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $CONTENTID
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
