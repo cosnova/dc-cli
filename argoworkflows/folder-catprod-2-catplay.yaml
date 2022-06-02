@@ -81,9 +81,9 @@ spec:
             value: '60e5a544cff47e00012dc8f6'
         image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
         source: |
-          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
 
-          dc-cli content-item copy --srcFolder $FOLDERID_SOURCE --dstFolder FOLDERID_DESTINATION --dstHubId $CATPLAY --force
+          dc-cli content-item copy --srcFolder $FOLDERID_SOURCE --dstFolder $FOLDERID_DESTINATION --dstHubId $CATPLAY --force
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
