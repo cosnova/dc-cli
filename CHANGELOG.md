@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.15.1](https://www.github.com/amplience/dc-cli/compare/v0.15.0...v0.15.1) (2022-05-26)
+
+
+### Bug Fixes
+
+* **event:** fix event slots list pagination ([#141](https://www.github.com/amplience/dc-cli/issues/141)) ([d3119aa](https://www.github.com/amplience/dc-cli/commit/d3119aad92e45c6147f463ccf9a54c9608c3ffc7))
+
+## [0.15.0](https://www.github.com/amplience/dc-cli/compare/v0.14.0...v0.15.0) (2022-05-16)
+
+
+### Features
+
+* **event:** add event import/export commands and clone step ([#114](https://www.github.com/amplience/dc-cli/issues/114)) ([85a8889](https://www.github.com/amplience/dc-cli/commit/85a8889d7425aaa334c254d5c8204fb37e571841))
+
+## [0.14.0](https://www.github.com/amplience/dc-cli/compare/v0.13.0...v0.14.0) (2022-05-05)
+
+
+### Features
+
+* add regex lookup to type and schema export ([#126](https://www.github.com/amplience/dc-cli/issues/126)) ([93a0cdd](https://www.github.com/amplience/dc-cli/commit/93a0cddec309340ccf88e2abb16ae77de22435ec))
+* use facet request to reduce content fetched when facets in use ([#128](https://www.github.com/amplience/dc-cli/issues/128)) ([34e5223](https://www.github.com/amplience/dc-cli/commit/34e52237f1e84ce11badb00abfce44876ee8977b))
+
+
+### Bug Fixes
+
+* allow empty import without error, fix search index export on accounts where it is disabled ([#125](https://www.github.com/amplience/dc-cli/issues/125)) ([cce328b](https://www.github.com/amplience/dc-cli/commit/cce328b964dc581ca2fdc8df399a3a3cd5bb7bbf))
+* **search-index:** fix replica name rewriting ([#124](https://www.github.com/amplience/dc-cli/issues/124)) ([b692416](https://www.github.com/amplience/dc-cli/commit/b692416093140bb9845486fa4bc93e4e26ebd68a))
+
 ## [0.13.0](https://www.github.com/amplience/dc-cli/compare/v0.12.0...v0.13.0) (2022-01-06)
 
 
