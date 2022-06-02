@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: clean-hub
+spec:
+  arguments:
+    parameters:
+      - name: hubid
+        value: '12345678'
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: cnvwebshop
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: hubid
+                  value: '{{workflow.parameters.hubid}}'
+            name: step1
+            template: step1
+    # Step 1 - Clean specified Hub
+    - inputs:
+        parameters:
+          - name: hubid
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: HUBID
+            value: '{{workflow.parameters.hubid}}'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
+
+          dc-cli hub clean --hubId $HUBID --force
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
