@@ -1,0 +1,90 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: folder-catprod-2-catplay
+spec:
+  arguments:
+    parameters:
+      - name: parameters
+        value: 'default-value'
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: cnvwebshop
+  metrics:
+    prometheus: []
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: parameters
+                  value: '{{workflow.parameters.parameters}}'
+            name: step1
+            template: step1
+        - - name: step2
+            template: step2
+    # Step 1 - Clean / Archive Folder
+    - inputs:
+      metrics:
+        prometheus: []
+      name: step2
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+          - name: FOLDERID_DESTINATION # CATPLAY - en-GB
+            value: '60e5a544cff47e00012dc8f6'
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+
+          dc-cli content-item archive --folderId $FOLDERID_DESTINATION --force
+    # Step 2 - Copy Folder Source to Folder Destination
+    - inputs:
+      metrics:
+        prometheus: []
+      name: step3
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: CATPLAY
+            value: '60d9d13bc9e77c000105146d'
+          - name: CATPROD
+            value: '5f05a72acff47e00019357ef'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+          - name: FOLDERID_SOURCE # CATPROD - en-GB
+            value: '629734e04cedfd00019bbef5'
+          - name: FOLDERID_DESTINATION # CATPLAY - en-GB
+            value: '60e5a544cff47e00012dc8f6'
+        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
+
+          dc-cli content-item copy --srcFolder $FOLDERID_SOURCE --dstFolder FOLDERID_DESTINATION --dstHubId $CATPLAY --publish
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
