@@ -83,7 +83,7 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
 
-          dc-cli content-item copy --srcFolder $FOLDERID_SOURCE --dstFolder FOLDERID_DESTINATION --dstHubId $CATPLAY --publish
+          dc-cli content-item copy --srcFolder $FOLDERID_SOURCE --dstFolder FOLDERID_DESTINATION --dstHubId $CATPLAY --force
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
