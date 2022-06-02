@@ -28,7 +28,7 @@ spec:
     - inputs:
       metrics:
         prometheus: []
-      name: step2
+      name: step1
       outputs:
         parameters: []
       script:
@@ -56,7 +56,7 @@ spec:
     - inputs:
       metrics:
         prometheus: []
-      name: step3
+      name: step2
       outputs:
         parameters: []
       script:
