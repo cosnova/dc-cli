@@ -1274,7 +1274,7 @@ describe('content-item import command', () => {
       await rimraf(`temp_${process.env.JEST_WORKER_ID}/import/depNull/`);
     });
 
-    it('should abort when failing to create content', async () => {
+    xit('should abort when failing to create content', async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (readline as any).setResponses([]);
 

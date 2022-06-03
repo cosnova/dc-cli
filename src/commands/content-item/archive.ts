@@ -181,7 +181,11 @@ export const processItems = async ({
 
   for (let i = 0; i < contentItems.length; i++) {
     try {
-      const deliveryKey = contentItems[i].body._meta.deliveryKey;
+      const deliveryKey = contentItems[i]
+        ? contentItems[i].body
+          ? contentItems[i].body._meta.deliveryKey
+          : undefined
+        : undefined;
       let args = contentItems[i].id;
       if (deliveryKey) {
         contentItems[i].body._meta.deliveryKey = null;
@@ -200,6 +204,11 @@ export const processItems = async ({
 
       if (ignoreError) {
         log.warn(`Failed to archive ${contentItems[i].label} (${contentItems[i].id}), continuing.`, e);
+        console.log(
+          `Failed to archive ${contentItems[i].label} (${contentItems[i].id}), continuing. ${JSON.stringify(
+            contentItems[i]
+          )}`
+        );
       } else {
         log.error(`Failed to archive ${contentItems[i].label} (${contentItems[i].id}), aborting.`, e);
         break;

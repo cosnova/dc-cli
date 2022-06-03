@@ -751,8 +751,9 @@ const importTree = async (
         oldVersion = result.oldVersion;
       } catch (e) {
         log.error(`Failed creating ${content.label}:`, e);
+        console.log(`Failed creating ${content.label}, ${JSON.stringify(content)}:`, e.toString());
         abort(e);
-        return false;
+        continue;
       }
 
       const updated = oldVersion > 0;

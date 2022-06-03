@@ -5,4 +5,8 @@ export interface CleanHubBuilderOptions {
   logFile: FileLog;
   force?: boolean;
   step?: CleanHubStepId;
+  ignoreError?: boolean;
+  folderId?: string;
+  facet?: string;
+  single?: boolean;
 }

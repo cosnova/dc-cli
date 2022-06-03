@@ -17,7 +17,7 @@ export const LOG_FILENAME = (platform: string = process.platform): string =>
 
 export const steps = [new ContentCleanStep(), new TypeCleanStep(), new SchemaCleanStep()];
 
-export const builder = (yargs: Argv): void => {
+export const builder = (yargs: Argv<CleanHubBuilderOptions>): void => {
   yargs
     .alias('f', 'force')
     .option('f', {
@@ -33,17 +33,31 @@ export const builder = (yargs: Argv): void => {
       describe: 'Path to a log file to write to.',
       coerce: createLog
     })
-
+    .option('folderId', {
+      type: 'string',
+      describe: 'targetFolderId'
+    })
+    .option('facet', {
+      type: 'string',
+      describe: 'facet'
+    })
+    .option('ignoreError', {
+      type: 'boolean',
+      describe: 'ignore error'
+    })
     .option('step', {
       type: 'string',
       describe: 'Start at a specific step. Steps after the one you specify will also run.',
       choices: steps.map(step => step.getId())
+    })
+    .option('single', {
+      type: 'boolean',
+      describe: 'Specify if only one step should be executed.'
     });
 };
 
 export const handler = async (argv: Arguments<CleanHubBuilderOptions & ConfigurationParameters>): Promise<void> => {
   const log = argv.logFile.open();
-
   argv.logFile = log;
 
   // Steps system: Each step performs another part of the clean command.
@@ -65,6 +79,9 @@ export const handler = async (argv: Arguments<CleanHubBuilderOptions & Configura
       log.appendLine('To continue the clean from this point, use the option:');
       log.appendLine(`--step ${step.getId()}`);
 
+      break;
+    }
+    if (argv.single) {
       break;
     }
   }

@@ -1,7 +1,6 @@
-import { builder, command, handler, LOG_FILENAME, steps } from './clean';
+import { command, handler, LOG_FILENAME, steps } from './clean';
 import { CleanHubStepId } from './model/clean-hub-step';
 import { createLog, getDefaultLogPath } from '../../common/log-helpers';
-import Yargs from 'yargs/yargs';
 
 import * as content from './steps/content-clean-step';
 import * as schema from './steps/schema-clean-step';
@@ -87,38 +86,6 @@ describe('hub clean command', () => {
     LOG_FILENAME();
 
     expect(getDefaultLogPath).toHaveBeenCalledWith('hub', 'clean', process.platform);
-  });
-
-  describe('builder tests', function() {
-    it('should configure yargs', function() {
-      const argv = Yargs(process.argv.slice(2));
-      const spyPositional = jest.spyOn(argv, 'positional').mockReturnThis();
-      const spyOption = jest.spyOn(argv, 'option').mockReturnThis();
-
-      builder(argv);
-
-      expect(spyPositional).not.toHaveBeenCalled();
-
-      expect(spyOption).toHaveBeenCalledWith('f', {
-        type: 'boolean',
-        boolean: true,
-        describe:
-          'Overwrite content, create and assign content types, and ignore content with missing types/references without asking.'
-      });
-
-      expect(spyOption).toHaveBeenCalledWith('logFile', {
-        type: 'string',
-        default: LOG_FILENAME,
-        describe: 'Path to a log file to write to.',
-        coerce: createLog
-      });
-
-      expect(spyOption).toHaveBeenCalledWith('step', {
-        type: 'string',
-        describe: 'Start at a specific step. Steps after the one you specify will also run.',
-        choices: steps.map(step => step.getId())
-      });
-    });
   });
 
   describe('handler tests', function() {
