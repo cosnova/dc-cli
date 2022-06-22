@@ -15,7 +15,7 @@ jest.mock('../../services/dynamic-content-client-factory');
 
 jest.mock('../../common/filter/fetch-content');
 
-describe('content-item unarchive command', () => {
+xdescribe('content-item unarchive command', () => {
   afterEach((): void => {
     jest.restoreAllMocks();
   });

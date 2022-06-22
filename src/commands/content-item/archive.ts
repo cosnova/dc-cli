@@ -127,7 +127,7 @@ export const getContentItems = async ({
 
     const hub = await client.hubs.get(hubId);
 
-    contentItems = await getContent(client, hub, facet, { repoId, folderId, status: Status.ACTIVE });
+    contentItems = await getContent(client, hub, facet, { repoId, folderId, status: Status.ACTIVE, enrichItems: true });
 
     return { contentItems, missingContent: false };
   } catch (err) {
@@ -181,11 +181,7 @@ export const processItems = async ({
 
   for (let i = 0; i < contentItems.length; i++) {
     try {
-      const deliveryKey = contentItems[i]
-        ? contentItems[i].body
-          ? contentItems[i].body._meta.deliveryKey
-          : undefined
-        : undefined;
+      const deliveryKey = contentItems[i].body._meta.deliveryKey;
       let args = contentItems[i].id;
       if (deliveryKey) {
         contentItems[i].body._meta.deliveryKey = null;
@@ -204,11 +200,7 @@ export const processItems = async ({
 
       if (ignoreError) {
         log.warn(`Failed to archive ${contentItems[i].label} (${contentItems[i].id}), continuing.`, e);
-        console.log(
-          `Failed to archive ${contentItems[i].label} (${contentItems[i].id}), continuing. ${JSON.stringify(
-            contentItems[i]
-          )}`
-        );
+        console.log(`Failed to archive ${contentItems[i].label} (${contentItems[i].id}), continuing.`);
       } else {
         log.error(`Failed to archive ${contentItems[i].label} (${contentItems[i].id}), aborting.`, e);
         break;

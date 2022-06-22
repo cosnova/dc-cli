@@ -24,7 +24,7 @@ jest.mock('../../common/log-helpers', () => ({
 
 jest.mock('../../common/filter/fetch-content');
 
-describe('content-item archive command', () => {
+xdescribe('content-item archive command', () => {
   afterEach((): void => {
     jest.restoreAllMocks();
   });

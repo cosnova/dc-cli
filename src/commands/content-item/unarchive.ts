@@ -131,7 +131,12 @@ export const getContentItems = async ({
 
     const hub = await client.hubs.get(hubId);
 
-    contentItems = await getContent(client, hub, facet, { repoId, folderId, status: Status.ARCHIVED });
+    contentItems = await getContent(client, hub, facet, {
+      repoId,
+      folderId,
+      status: Status.ARCHIVED,
+      enrichItems: true
+    });
 
     // Delete the delivery keys, as the unarchive will attempt to reassign them if present.
     contentItems.forEach(item => delete item.body._meta.deliveryKey);
@@ -206,6 +211,7 @@ export const processItems = async ({
 
       if (ignoreError) {
         log.warn(`Failed to unarchive ${contentItems[i].label} (${contentItems[i].id}), continuing.`, e);
+        console.log(`Failed to unarchive ${contentItems[i].label} (${contentItems[i].id}), continuing.`);
       } else {
         log.error(`Failed to unarchive ${contentItems[i].label} (${contentItems[i].id}), aborting.`, e);
         break;
