@@ -24,4 +24,6 @@ export interface CloneHubBuilderOptions {
 
   excludeKeys?: boolean;
   acceptSnapshotLimits: boolean;
+
+  facet?: string;
 }

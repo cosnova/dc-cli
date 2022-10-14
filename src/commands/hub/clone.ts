@@ -160,6 +160,10 @@ export const builder = (yargs: Argv): void => {
       default: LOG_FILENAME,
       describe: 'Path to a log file to write to.',
       coerce: createLog
+    })
+    .option('facet', {
+      type: 'string',
+      describe: 'facet'
     });
 };
 
