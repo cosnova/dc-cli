@@ -16,7 +16,7 @@ local pipeline(name) = {
 
 local kaniko(name, artifact, context, dockerfile, list) = {
     name: name,
-    image: "cnvtools.azurecr.io/drone-kaniko:main-2022-4",
+    image: "cnvtools.azurecr.io/drone-kaniko:main-prod",
     pull: "if-not-exists",
     volumes: [ 
       {name: "cache", path: "/cache"}, 
@@ -65,9 +65,6 @@ local build(artifact, directory) = pipeline(artifact) {
             '/kaniko/plugin.sh',
             # '/slack', # disable slack in case of success - too noisy
         ]),
-        kaniko("report-failure", artifact, ".", "Dockerfile", [
-            'PLUGIN_SLACK_TEMPLATE=$PLUGIN_SLACK_TEMPLATE_FAILURE /slack',
-        ]) + {when: {status:["failure"]},},
     ],
 };
 
@@ -83,7 +80,7 @@ local k8sSecret(name, path, key) = {
 ###############################################################################
 [
   #k8sSecret("docker_password", "drone-env-secrets", "COSNOVA_DI_ACR_ADMIN_PASSWORD"),
-  k8sSecret("slack_token", "drone-env-secrets", "SLACK_TOKEN"),
+  #k8sSecret("slack_token", "drone-env-secrets", "SLACK_TOKEN"),
   k8sSecret("cnvtools", "cnvtools", ".dockerconfigjson"),  
 
   build('dc-cli', ''),
