@@ -22,7 +22,7 @@ local kaniko(name, artifact, context, dockerfile, list) = {
       {name: "cache", path: "/cache"}, 
     ],
     environment: {
-        GITHUB_ACCESS_TOKEN: {from_secret: "GITHUB_ACCESS_TOKEN"},
+        container: "kube",
     },
     settings: {
         context: context,
