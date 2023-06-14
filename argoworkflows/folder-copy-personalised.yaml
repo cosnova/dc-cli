@@ -1,0 +1,91 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: folder-copy-personalised
+spec:
+  arguments:
+    parameters:
+      - name: srcfolderid
+        value: '000000'
+      - name: destfolderid
+        value: '111111'
+      - name: srchubid
+        value: 'Source Hub Prod!'
+      - name: desthubid
+        value: 'Destination Hub Dev!'
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: cnvwebshop
+  metrics:
+    prometheus: []
+  onExit: exit-handler
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: srcfolderid
+                  value: '{{workflow.parameters.srcfolderid}}'
+                - name: destfolderid
+                  value: '{{workflow.parameters.destfolderid}}'
+                - name: srchubid
+                  value: '{{workflow.parameters.srchubid}}'
+                - name: desthubid
+                  value: '{{workflow.parameters.desthubid}}'
+            name: step1
+            template: step1
+    # Step 1 - Login and copy FolderIDsrc to destination FolderIDdest
+    - inputs:
+        parameters:
+          - name: srcfolderid
+          - name: destfolderid
+          - name: srchubid
+          - name: desthubid
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: SRCFOLDERID
+            value: '{{workflow.parameters.srcfolderid}}'
+          - name: DESTFOLDERID
+            value: '{{workflow.parameters.destfolderid}}'
+          - name: SRCHUBID
+            value: '{{workflow.parameters.srchubid}}'
+          - name: DESTHUBID
+            value: '{{workflow.parameters.desthubid}}'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
+        source: |
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
+
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --force --lastPublish --publish
+    - name: exit-handler
+      steps:
+      - - arguments:
+            parameters:
+            - name: status
+              value: '{{workflow.status}}'
+            - name: failures
+              value: '{{workflow.failures}}'
+          name: notify-teams-failure
+          templateRef:
+            name: teams-exithandler
+            template: notify-teams-failure
+          when: '{{workflow.status}} != Succeeded'          
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
