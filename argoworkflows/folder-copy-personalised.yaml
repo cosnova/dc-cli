@@ -71,7 +71,11 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
 
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --force --lastPublish --publish
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/mapFile.json --force --lastPublish --publish
+        volumeMounts:
+        - mountPath: /mnt
+          name: storage
+          readOnly: false             
     - name: exit-handler
       steps:
       - - arguments:
@@ -89,3 +93,9 @@ spec:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
     secondsAfterSuccess: 600
+  volumes:
+  - azureFile:
+      readOnly: false    
+      secretName: webshop1storage
+      shareName: data/amplience
+    name: storage  
