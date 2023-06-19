@@ -58,6 +58,10 @@ spec:
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
 
           dc-cli content-item archive --folderId $FOLDERID --force
+        volumeMounts:
+        - mountPath: /mnt
+          name: storage
+          readOnly: false               
     - name: exit-handler
       steps:
       - - arguments:
@@ -75,3 +79,9 @@ spec:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
     secondsAfterSuccess: 600
+  volumes:
+  - azureFile:
+      readOnly: false    
+      secretName: webshop1storage
+      shareName: data/amplience
+    name: storage  
