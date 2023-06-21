@@ -71,9 +71,11 @@ spec:
                 name: dc-cli
         image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
         source: |
+          set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
 
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile $MAP --force --lastPublish --publish
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force --lastPublish --publish
+          echo $?
         volumeMounts:
         - mountPath: /mnt
           name: storage
