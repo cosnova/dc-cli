@@ -60,6 +60,8 @@ spec:
             value: '{{workflow.parameters.srchubid}}'
           - name: DESTHUBID
             value: '{{workflow.parameters.desthubid}}'
+          - name: MAP
+            value: '/mnt/folder-copy-personalised/mapFile.json'
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
@@ -71,7 +73,7 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
 
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force --lastPublish --publish
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile $MAP --force --lastPublish --publish
         volumeMounts:
         - mountPath: /mnt
           name: storage
