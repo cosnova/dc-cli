@@ -69,7 +69,7 @@ spec:
               secretKeyRef:
                 key: CLIENTSECRET
                 name: dc-cli
-        image: 'waicosnovadi.azurecr.io/dc-cli:build-pipeline'
+        image: 'cnvwebshop.azurecr.io/dc-cli:build-pipeline'
         source: |
           set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
@@ -77,27 +77,27 @@ spec:
           dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force --lastPublish --publish
           echo $?
           echo "exit code"
-          
+
         volumeMounts:
-        - mountPath: /mnt
-          name: storage
-          readOnly: false             
+          - mountPath: /mnt
+            name: storage
+            readOnly: false
     - name: exit-handler
       steps:
-      - - arguments:
-            parameters:
-            - name: status
-              value: '{{workflow.status}}'
-            - name: failures
-              value: '{{workflow.failures}}'
-          name: notify-teams-failure
-          templateRef:
-            name: teams-exithandler
-            template: notify-teams-failure
-          when: '{{workflow.status}} != Succeeded'          
+        - - arguments:
+              parameters:
+                - name: status
+                  value: '{{workflow.status}}'
+                - name: failures
+                  value: '{{workflow.failures}}'
+            name: notify-teams-failure
+            templateRef:
+              name: teams-exithandler
+              template: notify-teams-failure
+            when: '{{workflow.status}} != Succeeded'
   volumes:
-  - azureFile:
-      readOnly: false    
-      secretName: webshop1storage
-      shareName: data/amplience
-    name: storage  
+    - azureFile:
+        readOnly: false
+        secretName: webshop1storage
+        shareName: data/amplience
+      name: storage
