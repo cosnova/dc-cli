@@ -13,6 +13,8 @@ spec:
         value: 'Source Hub Prod!'
       - name: desthubid
         value: 'Destination Hub Dev!'
+      - name: message
+        value: hello world
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -80,7 +82,15 @@ spec:
         volumeMounts:
         - mountPath: /mnt
           name: storage
-          readOnly: false             
+          readOnly: false
+    - name: whalesay
+      inputs:
+        parameters:
+        - name: message
+      container:
+        image: docker/whalesay:latest
+        command: [cowsay]
+        args: ["{{inputs.parameters.message}}"]             
     - name: exit-handler
       steps:
       - - arguments:
