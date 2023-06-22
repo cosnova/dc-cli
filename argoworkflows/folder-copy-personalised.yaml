@@ -13,8 +13,6 @@ spec:
         value: 'Source Hub Prod!'
       - name: desthubid
         value: 'Destination Hub Dev!'
-      - name: message
-        value: hello world
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -23,14 +21,6 @@ spec:
     prometheus: []
   onExit: exit-handler
   templates:
-    - name: whalesay
-      inputs:
-        parameters:
-        - name: message
-      container:
-        image: docker/whalesay:latest
-        command: [cowsay]
-        args: ["{{inputs.parameters.message}}"]
     - name: template
       steps:
         - - arguments:
