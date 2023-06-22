@@ -23,6 +23,14 @@ spec:
     prometheus: []
   onExit: exit-handler
   templates:
+    - name: whalesay
+      inputs:
+        parameters:
+        - name: message
+      container:
+        image: docker/whalesay:latest
+        command: [cowsay]
+        args: ["{{inputs.parameters.message}}"]
     - name: template
       steps:
         - - arguments:
@@ -82,15 +90,7 @@ spec:
         volumeMounts:
         - mountPath: /mnt
           name: storage
-          readOnly: false
-    - name: whalesay
-      inputs:
-        parameters:
-        - name: message
-      container:
-        image: docker/whalesay:latest
-        command: [cowsay]
-        args: ["{{inputs.parameters.message}}"]             
+          readOnly: false             
     - name: exit-handler
       steps:
       - - arguments:
