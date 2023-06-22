@@ -73,10 +73,11 @@ spec:
         source: |
           set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
-
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force --lastPublish --publish
-          echo "exit code"
           echo $?
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force --lastPublish --publish
+          echo $?
+          echo "exit code"
+          
         volumeMounts:
         - mountPath: /mnt
           name: storage
