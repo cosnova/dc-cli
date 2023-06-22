@@ -94,10 +94,6 @@ spec:
             name: teams-exithandler
             template: notify-teams-failure
           when: '{{workflow.status}} != Succeeded'          
-  ttlStrategy:
-    secondsAfterCompletion: 600
-    secondsAfterFailure: 259200
-    secondsAfterSuccess: 600
   volumes:
   - azureFile:
       readOnly: false    
