@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: test-workflow-teams
+spec:
+  arguments:
+    parameters:
+      - name: message
+        value: hello world
+  entrypoint: template
+  onExit: exit-handler
+  templates:
+    - name: whalesay
+      inputs:
+        parameters:
+        - name: message
+      container:
+        image: docker/whalesay:latest
+        command: [cowsay]
+        args: ["{{inputs.parameters.message}}"]
+    - name: exit-handler
+      steps:
+      - - arguments:
+            parameters:
+            - name: status
+              value: '{{workflow.status}}'
+            - name: failures
+              value: '{{workflow.failures}}'
+          name: notify-teams-failure
+          templateRef:
+            name: teams-exithandler
+            template: notify-teams-failure
+          when: '{{workflow.status}} != Succeeded'
