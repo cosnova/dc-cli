@@ -16,7 +16,7 @@ local pipeline(name) = {
 
 local kaniko(name, artifact, context, dockerfile, list) = {
     name: name,
-    image: "cnvtools.azurecr.io/drone-kaniko:main-prod",
+    image: "cnvtools.azurecr.io/drone-kaniko:a0359f7e-2022-4",
     pull: "if-not-exists",
     volumes: [ 
       {name: "cache", path: "/cache"}, 
