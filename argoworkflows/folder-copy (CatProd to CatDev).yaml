@@ -1,0 +1,105 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: folder-copy-personalised
+spec:
+  arguments:
+    parameters:
+      - name: srchubid
+        value: '5f05a72acff47e00019357ef'
+      - name: srcfolderid
+        value: '000000'
+      - name: desthubid
+        value: '5e58fb8752faff0001085709'
+      - name: destfolderid
+        value: '111111'
+  entrypoint: template
+  imagePullSecrets:
+    - name: waicosnovadi
+    - name: cnvwebshop
+  metrics:
+    prometheus: []
+  onExit: exit-handler
+  templates:
+    - name: template
+      steps:
+        - - arguments:
+              parameters:
+                - name: srcfolderid
+                  value: '{{workflow.parameters.srcfolderid}}'
+                - name: destfolderid
+                  value: '{{workflow.parameters.destfolderid}}'
+                - name: srchubid
+                  value: '{{workflow.parameters.srchubid}}'
+                - name: desthubid
+                  value: '{{workflow.parameters.desthubid}}'
+            name: step1
+            template: step1
+        - - name: step2
+            template: step2
+    # Step 1 - Login and copy FolderIDsrc (from CatProd) to destination FolderIDdest (CatDev)
+    - inputs:
+        parameters:
+          - name: srcfolderid
+          - name: destfolderid
+          - name: srchubid
+          - name: desthubid
+      metrics:
+        prometheus: []
+      name: step1
+      outputs:
+        parameters: []
+      script:
+        args: []
+        command:
+          - /bin/sh
+        env:
+          - name: SRCFOLDERID
+            value: '{{workflow.parameters.srcfolderid}}'
+          - name: DESTFOLDERID
+            value: '{{workflow.parameters.destfolderid}}'
+          - name: SRCHUBID
+            value: '{{workflow.parameters.srchubid}}'
+          - name: DESTHUBID
+            value: '{{workflow.parameters.desthubid}}'
+          - name: MAP
+            value: '/mnt/folder-copy-personalised/mapFile.json'
+          - name: CLIENTID
+            value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
+          - name: CLIENTSECRET
+            valueFrom:
+              secretKeyRef:
+                key: CLIENTSECRET
+                name: dc-cli
+        image: 'cnvwebshop.azurecr.io/dc-cli:build-pipeline'
+        source: |
+          set -e
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
+          echo $?
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force
+          echo $?
+          echo "exit code"
+
+        volumeMounts:
+          - mountPath: /mnt
+            name: storage
+            readOnly: false
+    - name: exit-handler
+      steps:
+        - - arguments:
+              parameters:
+                - name: status
+                  value: '{{workflow.status}}'
+                - name: failures
+                  value: '{{workflow.failures}}'
+            name: notify-teams-failure
+            templateRef:
+              name: teams-exithandler
+              template: notify-teams-failure
+            when: '{{workflow.status}} != Succeeded'
+  volumes:
+    - azureFile:
+        readOnly: false
+        secretName: webshop1storage
+        shareName: data/amplience
+      name: storage
