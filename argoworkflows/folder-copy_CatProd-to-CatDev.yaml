@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: folder-copy-personalised
+  name: folder-copy_catprod-to-catdev
 spec:
   arguments:
     parameters:
@@ -63,7 +63,7 @@ spec:
           - name: DESTHUBID
             value: '{{workflow.parameters.desthubid}}'
           - name: MAP
-            value: '/mnt/folder-copy-personalised/mapFile.json'
+            value: '/mnt/folder-copy_catprod-to-catdev/mapFile.json'
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
@@ -76,7 +76,7 @@ spec:
           set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
           echo $?
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy-personalised/mapFile.json --force
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy_catprod-to-catdev/mapFile.json --force
           echo $?
           echo "exit code"
 
