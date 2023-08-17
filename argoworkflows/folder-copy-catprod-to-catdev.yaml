@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: folder-copy_catprod-to-catdev
+  name: folder-copy-catprod-to-catdev
 spec:
   arguments:
     parameters:
