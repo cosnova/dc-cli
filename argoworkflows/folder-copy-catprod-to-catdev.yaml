@@ -61,7 +61,7 @@ spec:
           - name: DESTFOLDERID
             value: '{{workflow.parameters.destfolderid}}'
           - name: MAP
-            value: '/mnt/folder-copy_catprod-to-catdev/mapFile.json'
+            value: '/mnt/folder-copy-catprod-to-catdev/mapFile.json'
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
@@ -74,7 +74,7 @@ spec:
           set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
           echo $?
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile /mnt/folder-copy_catprod-to-catdev/mapFile.json --force
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile $MAP --force
           echo $?
           echo "exit code"
 
