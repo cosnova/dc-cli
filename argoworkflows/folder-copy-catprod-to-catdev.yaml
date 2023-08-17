@@ -35,8 +35,6 @@ spec:
                   value: '{{workflow.parameters.desthubid}}'
             name: step1
             template: step1
-        - - name: step2
-            template: step2
     # Step 1 - Login and copy FolderIDsrc (from CatProd) to destination FolderIDdest (CatDev)
     - inputs:
         parameters:
