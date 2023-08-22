@@ -729,9 +729,11 @@ const importTree = async (
     for (let j = 0; j < level.items.length; j++) {
       const item = level.items[j];
       const content = item.owner.content;
-
       // Replace any dependancies with the existing mapping.
       item.dependancies.forEach(dep => {
+        dep.dependancy._meta.schema;
+        console.log(item.owner.content.toJSON());
+        console.log(item.owner.content.body);
         rewriteDependancy(dep, mapping, false);
       });
 
