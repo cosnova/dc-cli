@@ -185,9 +185,9 @@ describe('configure command', function() {
     expect(fs.readFileSync).toHaveBeenCalledWith(configFile, 'utf-8');
     expect(mockExit).toHaveBeenCalledWith(2);
     expect(mockError.mock.calls[0][0]).toMatchInlineSnapshot(`
-      "FATAL - Could not parse JSON configuration. Inspect the configuration file at config.json
-      Unexpected token i in JSON at position 1"
-    `);
+"FATAL - Could not parse JSON configuration. Inspect the configuration file at config.json
+Expected property name or '}' in JSON at position 1"
+`);
   });
 
   it('should not exit the process if the config file is invalid, but ignoreError is true', () => {
@@ -204,9 +204,9 @@ describe('configure command', function() {
     expect(fs.readFileSync).toHaveBeenCalledWith(configFile, 'utf-8');
     expect(mockExit).not.toHaveBeenCalled();
     expect(mockError.mock.calls[0][0]).toMatchInlineSnapshot(`
-      "The configuration file at config.json is invalid, its contents will be ignored.
-      Unexpected token i in JSON at position 1"
-    `);
+"The configuration file at config.json is invalid, its contents will be ignored.
+Expected property name or '}' in JSON at position 1"
+`);
   });
 
   it('should use USERPROFILE env var for win32', () => {
