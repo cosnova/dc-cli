@@ -15,7 +15,6 @@ spec:
         value: '111111'
   entrypoint: template
   imagePullSecrets:
-    - name: waicosnovadi
     - name: cnvwebshop
   metrics:
     prometheus: []

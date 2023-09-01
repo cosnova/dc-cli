@@ -1,36 +1,36 @@
-apiVersion: argoproj.io/v1alpha1
-kind: WorkflowTemplate
-metadata:
-  name: test-workflow-teams
-  generateName: exit-handlers-
-spec:
-  arguments:
-    parameters:
-      - name: message
-        value: hello world
-  entrypoint: template
-  onExit: exit-handler
-  entrypoint: intentional-fail
-  onExit: exit-handler                  # invoke exit-handler template at end of the workflow
-  templates:
-    - name: whalesay
-      inputs:
-        parameters:
-        - name: message
-      container:
-        image: docker/whalesay:latest
-        command: [cowsay]
-        args: ["{{inputs.parameters.message}}"]
-    - name: exit-handler
-      steps:
-      - - arguments:
-            parameters:
-            - name: status
-              value: '{{workflow.status}}'
-            - name: failures
-              value: '{{workflow.failures}}'
-          name: notify-teams-failure
-          templateRef:
-            name: teams-exithandler
-            template: notify-teams-failure
-          when: '{{workflow.status}} != Succeeded'
+#apiVersion: argoproj.io/v1alpha1
+#kind: WorkflowTemplate
+#metadata:
+#  name: test-workflow-teams
+#  generateName: exit-handlers-
+#spec:
+#  arguments:
+#    parameters:
+#      - name: message
+#        value: hello world
+#  entrypoint: template
+#  onExit: exit-handler
+#  entrypoint: intentional-fail
+#  onExit: exit-handler                  # invoke exit-handler template at end of the workflow
+#  templates:
+#    - name: whalesay
+#      inputs:
+#        parameters:
+#        - name: message
+#      container:
+#        image: docker/whalesay:latest
+#        command: [cowsay]
+#        args: ["{{inputs.parameters.message}}"]
+#    - name: exit-handler
+#      steps:
+#      - - arguments:
+#            parameters:
+#            - name: status
+#              value: '{{workflow.status}}'
+#            - name: failures
+#              value: '{{workflow.failures}}'
+#          name: notify-teams-failure
+#          templateRef:
+#            name: teams-exithandler
+#            template: notify-teams-failure
+#          when: '{{workflow.status}} != Succeeded'
