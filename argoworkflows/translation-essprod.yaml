@@ -14,6 +14,7 @@ spec:
     - name: cnvwebshop
   metrics:
     prometheus: []
+  onExit: exit-handler    
   templates:
     - name: template
       steps:
@@ -60,6 +61,19 @@ spec:
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPROD
 
           dc-cli content-item workflow --facet "locale:/$LOCALELIST/, workflowId:/$TRANSLATIONID/" --repoId $CONTENTID -targetWorkflowLabel "Ready for Translation"
+    - name: exit-handler
+      steps:
+        - - arguments:
+              parameters:
+                - name: status
+                  value: '{{workflow.status}}'
+                - name: failures
+                  value: '{{workflow.failures}}'
+            name: notify-teams-failure
+            templateRef:
+              name: teams-exithandler
+              template: notify-teams-failure
+            when: '{{workflow.status}} != Succeeded'          
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
