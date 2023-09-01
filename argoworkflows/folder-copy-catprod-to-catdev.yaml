@@ -93,7 +93,6 @@ spec:
             templateRef:
               name: teams-exithandler
               template: notify-teams-failure
-            when: '{{workflow.status}} != Succeeded'
   volumes:
     - azureFile:
         readOnly: false
