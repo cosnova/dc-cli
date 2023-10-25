@@ -34,6 +34,7 @@ spec:
                   value: '{{workflow.parameters.destfolderid}}'
             name: step1
             template: step1
+    # testing with new secret url
     # Step 1 - Login and copy FolderIDsrc (from CatProd) to destination FolderIDdest (CatDev)
     - inputs:
         parameters:
