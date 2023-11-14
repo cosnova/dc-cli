@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.11.0](https://github.com/cosnova/dc-cli/compare/v0.10.0...v0.11.0) (2023-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* move dest configuration to the regular config file ([#110](https://github.com/cosnova/dc-cli/issues/110))
+
+### Features
+
+* add regex lookup to type and schema export ([#126](https://github.com/cosnova/dc-cli/issues/126)) ([93a0cdd](https://github.com/cosnova/dc-cli/commit/93a0cddec309340ccf88e2abb16ae77de22435ec))
+* concurrent publish queue with --batchPublish option ([#146](https://github.com/cosnova/dc-cli/issues/146)) ([632033c](https://github.com/cosnova/dc-cli/commit/632033cb2339efa4f6207189fd08aaf22a374840))
+* **config:** allow using configure command with a custom file ([#80](https://github.com/cosnova/dc-cli/issues/80)) ([5cc2939](https://github.com/cosnova/dc-cli/commit/5cc2939ee78f173e045618c8fd51a9f3d06e8d57))
+* **config:** print helpful error if config file is invalid json ([#108](https://github.com/cosnova/dc-cli/issues/108)) ([ce51fbc](https://github.com/cosnova/dc-cli/commit/ce51fbcffeb3cf9ffb0e53f8fbe02dee8506980c))
+* **content-item:** add tree command, improved circular dependency import ([#91](https://github.com/cosnova/dc-cli/issues/91)) ([39bdddf](https://github.com/cosnova/dc-cli/commit/39bdddf540baeebcc44fb353d473a61218b2bd37))
+* **content-item:** detect and rewrite media links when importing with --media flag ([#71](https://github.com/cosnova/dc-cli/issues/71)) ([3fd9437](https://github.com/cosnova/dc-cli/commit/3fd94371df77d4b32964d8c7fff5e05b8fdd4f75))
+* **content-item:** make --publish flag publish on update when source publish date is more recent ([#115](https://github.com/cosnova/dc-cli/issues/115)) ([c0c2174](https://github.com/cosnova/dc-cli/commit/c0c2174d818840380d76ba35e4ff65748db7ce26))
+* **event:** add event import/export commands and clone step ([#114](https://github.com/cosnova/dc-cli/issues/114)) ([85a8889](https://github.com/cosnova/dc-cli/commit/85a8889d7425aaa334c254d5c8204fb37e571841))
+* **extension:** extension import and export commands, clone step ([#92](https://github.com/cosnova/dc-cli/issues/92)) ([e322f5d](https://github.com/cosnova/dc-cli/commit/e322f5d0ed5977c6e1967dda1dc796c674407611))
+* facet argument for content item commands  ([#111](https://github.com/cosnova/dc-cli/issues/111)) ([dd4ddab](https://github.com/cosnova/dc-cli/commit/dd4ddabbee775b35614ebf7fbad7759aa2b7afc6))
+* **file-log:** add version to file-log title ([#107](https://github.com/cosnova/dc-cli/issues/107)) ([c95de01](https://github.com/cosnova/dc-cli/commit/c95de01fe922f2d364ff9fc5cf6ea8e96ce016d8))
+* **hub:** add environment management commands ([#149](https://github.com/cosnova/dc-cli/issues/149)) ([2857dac](https://github.com/cosnova/dc-cli/commit/2857dacca0a1f0a4cebf0b9361944098986f0ee5))
+* **hub:** clean hub command ([#77](https://github.com/cosnova/dc-cli/issues/77)) ([9fb7b80](https://github.com/cosnova/dc-cli/commit/9fb7b807707379792f4ac278d833b4b4d03409da))
+* **hub:** clone hub command ([#76](https://github.com/cosnova/dc-cli/issues/76)) ([0d6c43c](https://github.com/cosnova/dc-cli/commit/0d6c43c53b3ec6d0c6ca36f9b9061ce013f1da1e))
+* latest (1.18.0) dc-management-sdk-js ([3f8039e](https://github.com/cosnova/dc-cli/commit/3f8039e47a130d6225dbb09f2d3729fbd5050828))
+* move dest configuration to the regular config file ([#110](https://github.com/cosnova/dc-cli/issues/110)) ([1a1c180](https://github.com/cosnova/dc-cli/commit/1a1c18090c907538ad6c3e6912df8b50547cffd8))
+* readme overhaul ([#116](https://github.com/cosnova/dc-cli/issues/116)) ([49687d6](https://github.com/cosnova/dc-cli/commit/49687d68c43862e97f501ff1001a4a8ab6726991))
+* **search indexes:** support for async search index settings ([0e7d5e0](https://github.com/cosnova/dc-cli/commit/0e7d5e06f498b9f197a92a9d75400bab41434b72))
+* **search-index:** add search-index export and import commands ([#105](https://github.com/cosnova/dc-cli/issues/105)) ([ebfaf0b](https://github.com/cosnova/dc-cli/commit/ebfaf0bc9a611b78f6ccbd553aadf6ae3044146c))
+* **settings:** overwrite existing preview settings rather than ignoring updates ([#160](https://github.com/cosnova/dc-cli/issues/160)) ([a5d8dc5](https://github.com/cosnova/dc-cli/commit/a5d8dc564df0330c231fda1c919bd47e53553c58))
+* use facet request to reduce content fetched when facets in use ([#128](https://github.com/cosnova/dc-cli/issues/128)) ([34e5223](https://github.com/cosnova/dc-cli/commit/34e52237f1e84ce11badb00abfce44876ee8977b))
+
+
+### Bug Fixes
+
+* allow empty import without error, fix search index export on accounts where it is disabled ([#125](https://github.com/cosnova/dc-cli/issues/125)) ([cce328b](https://github.com/cosnova/dc-cli/commit/cce328b964dc581ca2fdc8df399a3a3cd5bb7bbf))
+* **auth:** 403 errors due to expiring token (dc-management-sdk-js 1.19.1) ([7185795](https://github.com/cosnova/dc-cli/commit/718579566f5fd6bfdf7b9e40a5e411e87379efe2))
+* combine workflow state and content item mapping files ([#96](https://github.com/cosnova/dc-cli/issues/96)) ([e9ceb96](https://github.com/cosnova/dc-cli/commit/e9ceb962e7c1acec55b11489fc60bd7d548ecaff))
+* **content-item:** enrich items when faceting for archive ([#152](https://github.com/cosnova/dc-cli/issues/152)) ([2902877](https://github.com/cosnova/dc-cli/commit/29028770a8fb70b2bb005885b1d2a94f8f01466a))
+* **content-item:** only assume links will be published, not references ([#150](https://github.com/cosnova/dc-cli/issues/150)) ([56bc1b4](https://github.com/cosnova/dc-cli/commit/56bc1b47bb0a7d63e19ef5cdc1bc83d99e0daf13))
+* **content-type-schema:** always treat archived schemas as out of date ([#112](https://github.com/cosnova/dc-cli/issues/112)) ([49085dd](https://github.com/cosnova/dc-cli/commit/49085ddd471b0a08726ccb175c540bdabaa81763))
+* **enrichedsearchindex:** convert the properties to their correct type ([7159361](https://github.com/cosnova/dc-cli/commit/715936122fe1efd2642767f67ea2b92fc4f3f3d1))
+* **event:** correctly archive events with unscheduled editions ([#159](https://github.com/cosnova/dc-cli/issues/159)) ([8cfefda](https://github.com/cosnova/dc-cli/commit/8cfefdab8dde4a3586663adfb071c45ad50a6208))
+* **event:** fix event slots list pagination ([#141](https://github.com/cosnova/dc-cli/issues/141)) ([d3119aa](https://github.com/cosnova/dc-cli/commit/d3119aad92e45c6147f463ccf9a54c9608c3ffc7))
+* **export:** content type schemas and content types special characters ([#69](https://github.com/cosnova/dc-cli/issues/69)) ([d73104c](https://github.com/cosnova/dc-cli/commit/d73104c73c5ce5de25c243d5df31bac67efdef4e))
+* **hub:** fix hub commands not being passed credentials ([#157](https://github.com/cosnova/dc-cli/issues/157)) ([0521428](https://github.com/cosnova/dc-cli/commit/05214286a573693d2cadbd55ccc2ffdac42aa0b9))
+* **hub:** validateHub respects environment variables ([#163](https://github.com/cosnova/dc-cli/issues/163)) ([5f35aaf](https://github.com/cosnova/dc-cli/commit/5f35aafbbf5f18189175affc7680608e1e8d9ed1))
+* json-exporter can now handle both windows and unix paths, regardless of host os ([#98](https://github.com/cosnova/dc-cli/issues/98)) ([de7e6d2](https://github.com/cosnova/dc-cli/commit/de7e6d26a4c570f0c1f15da1d906d2e425089e33))
+* **release:** set registry-url for setup-node ([2c077a3](https://github.com/cosnova/dc-cli/commit/2c077a376aa13c7bb3bfa50dd7bf52be4781033b))
+* **search indexes:** ensuring only pojos are converted to their type ([b237f21](https://github.com/cosnova/dc-cli/commit/b237f2140047bc9a1e8f8a920625e1370a45a39d))
+* **search-index:** fix replica name rewriting ([#124](https://github.com/cosnova/dc-cli/issues/124)) ([b692416](https://github.com/cosnova/dc-cli/commit/b692416093140bb9845486fa4bc93e4e26ebd68a))
+* **settings:** add missing log file option to settings export command ([#103](https://github.com/cosnova/dc-cli/issues/103)) ([602832c](https://github.com/cosnova/dc-cli/commit/602832c2a131b6044163a3f8350b3ffe1667d0f5))
+* strip locale before importing, then set it afterwards ([#70](https://github.com/cosnova/dc-cli/issues/70)) ([10838fd](https://github.com/cosnova/dc-cli/commit/10838fda47b793bae5af3b2fd3e1a72964ec9583))
+* unit test logging ([#100](https://github.com/cosnova/dc-cli/issues/100)) ([3c5586f](https://github.com/cosnova/dc-cli/commit/3c5586f04a5d66e012901a19ef6ca2cce5ba2c0a))
+
 ## [0.19.0](https://www.github.com/amplience/dc-cli/compare/v0.18.0...v0.19.0) (2023-02-16)
 
 
