@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: publish-catplay
+  name: publish-content
 spec:
   arguments:
     parameters:
@@ -9,6 +9,10 @@ spec:
         value: 'de-DE|en-GB...'
       - name: workflowidlist
         value: '1234abc|456def|789ghi... '
+      - name: hubid
+        value: '1234567890'
+      - name: contentid
+        value: '1234567890'
   entrypoint: template
   imagePullSecrets:
     - name: waicosnovadi
@@ -24,6 +28,10 @@ spec:
                   value: '{{workflow.parameters.localelist}}'
                 - name: workflowidlist
                   value: '{{workflow.parameters.workflowidlist}}'
+                - name: hubid
+                  value: '{{workflow.parameters.hubid}}'
+                - name: contentid
+                  value: '{{workflow.parameters.contentid}}'
             name: step1
             template: step1
     # Step 1 - Publish Job
@@ -31,6 +39,8 @@ spec:
         parameters:
           - name: localelist
           - name: workflowidlist
+          - name: hubid
+          - name: contentid
       metrics:
         prometheus: []
       name: step1
@@ -45,10 +55,10 @@ spec:
             value: '{{workflow.parameters.localelist}}'
           - name: WORKFLOWIDLIST
             value: '{{workflow.parameters.workflowidlist}}'
-          - name: CATPLAY
-            value: '60d9d13bc9e77c000105146d'
+          - name: HUBID
+            value: '{{workflow.parameters.hubid}}'
           - name: CONTENTID
-            value: '60d9d156cff47e0001166fe6' # CATPLAY Content Repo ID
+            value: '{{workflow.parameters.contentid}}'
           - name: CLIENTID
             value: 'c81b7886-f62b-4cad-ba01-02ca63026588'
           - name: CLIENTSECRET
@@ -58,7 +68,7 @@ spec:
                 name: dc-cli
         image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
         source: |
-          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $CATPLAY
+          dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
 
           dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutShoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $CONTENTID
   ttlStrategy:
