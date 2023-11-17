@@ -17,6 +17,7 @@ spec:
     - name: cnvwebshop
   metrics:
     prometheus: []
+  onExit: exit-handler
   templates:
     - name: template
       steps:
@@ -59,12 +60,34 @@ spec:
               secretKeyRef:
                 key: CLIENTSECRET
                 name: dc-cli
-        image: 'cnvwebshop.azurecr.io/dc-cli:95ad01fc'
+        image: 'cnvwebshop.azurecr.io/dc-cli:build-pipeline'
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
 
           dc-cli content-item publish --facet "locale:/$LOCALELIST/" --repoId $CONTENTID
-  ttlStrategy:
-    secondsAfterCompletion: 600
-    secondsAfterFailure: 259200
-    secondsAfterSuccess: 600
+
+          echo $?
+          echo "exit code"
+
+        volumeMounts:
+          - mountPath: /mnt
+            name: storage
+            readOnly: false
+    - name: exit-handler
+      steps:
+        - - arguments:
+              parameters:
+                - name: status
+                  value: '{{workflow.status}}'
+                - name: failures
+                  value: '{{workflow.failures}}'
+            name: notify-teams-failure
+            templateRef:
+              name: teams-exithandler
+              template: notify-teams-failure
+  volumes:
+    - azureFile:
+        readOnly: false
+        secretName: webshop1storage
+        shareName: data/amplience
+      name: storage
