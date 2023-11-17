@@ -7,8 +7,6 @@ spec:
     parameters:
       - name: localelist
         value: 'de-DE|en-GB...'
-      - name: workflowidlist
-        value: '1234abc|456def|789ghi... '
       - name: hubid
         value: '1234567890'
       - name: contentid
@@ -26,8 +24,6 @@ spec:
               parameters:
                 - name: localelist
                   value: '{{workflow.parameters.localelist}}'
-                - name: workflowidlist
-                  value: '{{workflow.parameters.workflowidlist}}'
                 - name: hubid
                   value: '{{workflow.parameters.hubid}}'
                 - name: contentid
@@ -38,7 +34,6 @@ spec:
     - inputs:
         parameters:
           - name: localelist
-          - name: workflowidlist
           - name: hubid
           - name: contentid
       metrics:
@@ -53,8 +48,6 @@ spec:
         env:
           - name: LOCALELIST
             value: '{{workflow.parameters.localelist}}'
-          - name: WORKFLOWIDLIST
-            value: '{{workflow.parameters.workflowidlist}}'
           - name: HUBID
             value: '{{workflow.parameters.hubid}}'
           - name: CONTENTID
@@ -70,7 +63,7 @@ spec:
         source: |
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $HUBID
 
-          dc-cli content-item publish --facet "schema:/CheckoutRetailerSelectionPage|CheckoutShoppingCartPage|ContactPage|ErrorPage|ProductDetailPage|ProductListPage|SearchResultPage|ServicePage|StorefinderPage/, locale:/$LOCALELIST/, workflowId:/$WORKFLOWIDLIST/" --repoId $CONTENTID
+          dc-cli content-item publish --facet "locale:/$LOCALELIST/" --repoId $CONTENTID
   ttlStrategy:
     secondsAfterCompletion: 600
     secondsAfterFailure: 259200
