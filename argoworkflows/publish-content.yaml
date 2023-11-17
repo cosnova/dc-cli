@@ -91,3 +91,7 @@ spec:
         secretName: webshop1storage
         shareName: data/amplience
       name: storage
+  ttlStrategy:
+    secondsAfterCompletion: 600
+    secondsAfterFailure: 259200
+    secondsAfterSuccess: 600
