@@ -13,6 +13,10 @@ spec:
         value: '5e58fb8752faff0001085709'
       - name: destfolderid
         value: '111111'
+      - name: publish
+        value: '--publish'
+      - name: lastPublish
+        value: '--lastPublish'
   entrypoint: template
   imagePullSecrets:
     - name: cnvwebshop
@@ -32,6 +36,10 @@ spec:
                   value: '{{workflow.parameters.desthubid}}'
                 - name: destfolderid
                   value: '{{workflow.parameters.destfolderid}}'
+                - name: publish
+                  value: '{{workflow.parameters.publish}}'
+                - name: lastPublish
+                  value: '{{workflow.parameters.lastPublish}}'
             name: step1
             template: step1
     # testing with new secret url
@@ -42,6 +50,8 @@ spec:
           - name: srcfolderid
           - name: desthubid
           - name: destfolderid
+          - name: publish
+          - name: lastPublish
       metrics:
         prometheus: []
       name: step1
@@ -60,6 +70,10 @@ spec:
             value: '{{workflow.parameters.desthubid}}'
           - name: DESTFOLDERID
             value: '{{workflow.parameters.destfolderid}}'
+          - name: PUBLISH
+            value: '{{workflow.parameters.publish}}'
+          - name: LASTPUBLISH
+            value: '{{workflow.parameters.lastPublish}}'
           - name: MAP
             value: '/mnt/folder-copy-catprod-to-catdev/mapFile.json'
           - name: CLIENTID
@@ -74,7 +88,7 @@ spec:
           set -e
           dc-cli configure --clientId $CLIENTID --clientSecret $CLIENTSECRET --hubId $SRCHUBID
           echo $?
-          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile $MAP --force
+          dc-cli content-item copy --srcFolder $SRCFOLDERID --dstFolder $DESTFOLDERID --dstHubId $DESTHUBID --mapFile $MAP --force $PUBLISH $LASTPUBLISH
           echo $?
           echo "exit code"
 
